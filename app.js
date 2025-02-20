@@ -8,7 +8,12 @@ const { title } = require('process');
 const app = express()
 
 const server = http.createServer(app)
-const io = socket(server)
+const io = socket(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 const chess = new Chess()
 let players = {}
@@ -67,7 +72,8 @@ io.on('connection', function(uniquesocket){
         }
     })
 })
-server.listen(3000, ()=> {
-    console.log('Listening to port 3000');
-    
-})
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, ()=> {
+    console.log(`Listening on port ${PORT}`);
+});
