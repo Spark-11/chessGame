@@ -12,18 +12,32 @@ const io = socket(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
-    }
+    },
+    transports: ['websocket', 'polling']
 });
 
 const chess = new Chess()
 let players = {}
 let currentPlayer = 'w'
 
+// Configure views and static files
+app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname, 'public')))
+
+// Add error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
 
 app.get('/',(req,res) => {
-    res.render('index', {title: 'Chess game'})
+    try {
+        res.render('index', {title: 'Chess game'})
+    } catch (error) {
+        console.error('Render error:', error);
+        res.status(500).send('Error rendering page');
+    }
 })
 io.on('connection', function(uniquesocket){
     console.log('connected');
