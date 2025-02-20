@@ -8,39 +8,17 @@ const { title } = require('process');
 const app = express()
 
 const server = http.createServer(app)
-const io = socket(server, {
-    cors: {
-        origin: ["https://chess-game-blue.vercel.app", "http://localhost:3000"],
-        methods: ["GET", "POST"],
-        credentials: true
-    },
-    allowEIO3: true,
-    transports: ['websocket', 'polling'],
-    path: "/socket.io/"
-});
+const io = socket(server)
 
 const chess = new Chess()
 let players = {}
 let currentPlayer = 'w'
 
-// Configure views and static files
-app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.use(express.static(path.join(__dirname, 'public')))
-
-// Add error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+app.use(express.static(path.join(__dirname,'public')))
 
 app.get('/',(req,res) => {
-    try {
-        res.render('index', {title: 'Chess game'})
-    } catch (error) {
-        console.error('Render error:', error);
-        res.status(500).send('Error rendering page');
-    }
+    res.render('index', {title: 'Chess game'})
 })
 io.on('connection', function(uniquesocket){
     console.log('connected');
@@ -89,8 +67,7 @@ io.on('connection', function(uniquesocket){
         }
     })
 })
-
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, ()=> {
-    console.log(`Listening on port ${PORT}`);
-});
+server.listen(3000, ()=> {
+    console.log('Listening to port 3000');
+    
+})

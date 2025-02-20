@@ -1,12 +1,4 @@
-const socket = io({
-    transports: ['websocket', 'polling'],
-    reconnection: true,
-    reconnectionAttempts: 5,
-    reconnectionDelay: 1000,
-    path: "/socket.io/",
-    withCredentials: true,
-    forceNew: true
-});
+const socket = io();
 
 const chess = new Chess()
 const boardElement = document.querySelector('.chessboard')
@@ -120,17 +112,5 @@ socket.on('move', (move) => {
     chess.move(move)
     renderBoard()
 })
-
-socket.on('connect_error', (error) => {
-    console.error('Connection Error:', error);
-});
-
-socket.on('connect', () => {
-    console.log('Connected to server');
-});
-
-socket.on('disconnect', () => {
-    console.log('Disconnected from server');
-});
 
 renderBoard()
