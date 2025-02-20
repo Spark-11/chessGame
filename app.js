@@ -10,10 +10,13 @@ const app = express()
 const server = http.createServer(app)
 const io = socket(server, {
     cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+        origin: ["https://chess-game-blue.vercel.app", "http://localhost:3000"],
+        methods: ["GET", "POST"],
+        credentials: true
     },
-    transports: ['websocket', 'polling']
+    allowEIO3: true,
+    transports: ['websocket', 'polling'],
+    path: "/socket.io/"
 });
 
 const chess = new Chess()
