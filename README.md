@@ -20,8 +20,8 @@ Before running this project, make sure you have the following installed:
 
 1. Clone this repository or download the source code:
 ```bash
-git clone <repository-url>
-cd chess.com
+git clone https://github.com/Spark-11/chessGame.git
+cd chessGame
 ```
 
 2. Install the required dependencies:
